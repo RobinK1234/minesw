@@ -1,62 +1,70 @@
 /* Game container */
 #minesweeper {
     display: grid;
-    grid-template-columns: repeat(10, 30px); /* Adjust the number of columns and cell size */
-    gap: 2px; /* Gap between cells */
-    max-width: 320px; /* Adjust the maximum width of the game board */
-    width: 100%; /* Make the game board responsive */
-    margin: 0 auto; /* Center the game board horizontally */
+    grid-template-columns: repeat(10, 30px);
+    gap: 3px;
+    max-width: 330px;
+    width: 100%;
+    margin: 0 auto;
     padding: 10px;
-    background-color: #ddd; /* Background color of the game board */
-    border: 2px solid #333; /* Border around the game board */
-    text-align: center; /* Center the content horizontally */
+    background-color: gray;
+    /*border: 2px solid #cc8f4d; */
+    text-align: center;
 }
 
 /* Cell styles */
 .cell {
-    width: 30px; /* Adjust the cell size */
+    width: 30px;
     height: 30px;
-    background-color: #ccc; /* Default background color of cells */
+    background-color: darkgray;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px; /* Font size of numbers in cells */
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     position: relative;
+    transition: all 0.2s;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+}
+
+/* Cell hover effect */
+.cell:hover {
+    transform: scale(0.85); /* Reduce size to 85% on hover */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Cell styles for opened cells */
 .cell.open {
-    background-color: #fff; /* Background color of opened cells */
-    cursor: default;
+    background-color: #fff;
 }
 
 /* Cell styles for flagged cells */
 .cell.flag::after {
-    content: '🚩'; /* Flag emoji */
-    font-size: 18px; /* Adjust the font size as needed */
+    content: '🚩';
+    font-size: 18px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-
 /* Cell styles for numbers */
-.cell.number1 {
-    color: #00f; /* Text color for number 1 */
+.cell.open.number1 {
+    color: black;
 }
 
-.cell.number2 {
-    color: #008000; /* Text color for number 2 */
+.cell.open.number2 {
+    color: blue;
 }
 
-.cell.number3 {
-    color: #ff0000; /* Text color for number 3 */
+.cell.open.number3 {
+    color: darkmagenta;
 }
-
-/* Add additional styles for numbers 4 to 8 as needed */
+.cell.open.number4 {
+    color: red;
+}
 
 /* Game over style */
 #game-over {
@@ -64,18 +72,18 @@
     font-size: 24px;
     margin-top: 20px;
     font-weight: bold;
-    color: #f00; /* Text color for game over message */
+    color: #FF6347; /* Tomato red text color for game over message */
 }
 
 /* New Game button */
 #reset-button {
     display: block;
-    width: 50%; /* Make the button half the length of the container */
-    max-width: 180px; /* Limit the button's maximum width */
-    margin: 10px auto; /* Center the button horizontally and add space around it */
+    width: 50%;
+    max-width: 180px;
+    margin: 10px auto;
     padding: 10px;
     background-color: #333;
-    color: #fff;
+    color: #FFF; /* White text color for the button */
     border: none;
     cursor: pointer;
     font-size: 16px;

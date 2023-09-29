@@ -179,6 +179,18 @@ function renderGrid() {
                     cell.innerHTML = "&#x1F4A3;"; // Bomb emoji
                 } else {
                     cell.textContent = grid[i][j].count || "";
+
+                    // Add the class for numbers on opened cells
+                    if (grid[i][j].count === 1) {
+                        cell.classList.add("open", "number1");
+                    } else if (grid[i][j].count === 2) {
+                        cell.classList.add("open", "number2");
+                    } else if (grid[i][j].count === 3) {
+                        cell.classList.add("open", "number3");
+                    } else if (grid[i][j].count === 4) {
+                        cell.classList.add("open", "number4");
+                    }
+                    // Add more classes for numbers 4 to 8 as needed
                 }
             } else if (grid[i][j].isFlagged) {
                 cell.classList.add("flag");
@@ -192,6 +204,7 @@ function renderGrid() {
         }
     }
 }
+
 
 
 
