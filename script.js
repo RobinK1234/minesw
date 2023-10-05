@@ -4,6 +4,8 @@ const mines = 20; // Number of mines
 
 const grid = [];
 let isFirstClick = true;
+let gameOver = false;
+
 
 // Function to create the grid
 function createGrid(firstClickRow, firstClickCol) {
@@ -67,14 +69,19 @@ function calculateAdjacentCounts() {
     }
 }
 
+
+
+// Function to handle a left-click on a cell
 // Function to handle a left-click on a cell
 function handleLeftClick(row, col) {
-    if (grid[row][col].isOpen || grid[row][col].isFlagged) return;
+    if (gameOver || grid[row][col].isOpen || grid[row][col].isFlagged) return;
 
     if (grid[row][col].isMine) {
+        // Reveal all mines
         revealMines();
-        alert("Game Over! You hit a mine.");
-        resetGame();
+        gameOver = true;
+        renderGrid(); // Render the grid with revealed mines
+        document.getElementById('game-over').style.display = 'block'; // Show game over message
         return; // Exit the function to prevent further action
     } else {
         grid[row][col].isOpen = true;
@@ -84,14 +91,17 @@ function handleLeftClick(row, col) {
         }
 
         if (checkWin()) {
-            alert("Congratulations! You win!");
-            resetGame();
+            document.getElementById('game-over').textContent = 'Congratulations! You win!';
+            document.getElementById('game-over').style.color = 'green'; // Change color for win message
+            document.getElementById('game-over').style.display = 'block'; // Show win message
+            gameOver = true;
             return; // Exit the function to prevent further action
         }
     }
 
     renderGrid();
 }
+
 
 // Function to open adjacent cells recursively
 function openAdjacentCells(row, col) {
@@ -123,7 +133,7 @@ function openAdjacentCells(row, col) {
 
 // Function to handle a right-click on a cell (flagging/unflagging)
 function handleRightClick(row, col) {
-    if (grid[row][col].isOpen) return;
+    if (gameOver || grid[row][col].isOpen) return;
 
     grid[row][col].isFlagged = !grid[row][col].isFlagged;
     renderGrid();
@@ -152,18 +162,25 @@ function revealMines() {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             if (grid[i][j].isMine) {
-                grid[i][j].isOpen = true;
+                grid[i][j].isOpen = true; // Reveal all mines
             }
         }
     }
 }
 
+
 // Function to reset the game
 function resetGame() {
     isFirstClick = true;
+    gameOver = false;
+    document.getElementById('game-over').style.display = 'none'; // Hide the game over message
+    revealMines();
     createGrid();
     renderGrid();
 }
+
+
+
 
 function renderGrid() {
     const minesweeperDiv = document.getElementById("minesweeper");
@@ -173,37 +190,33 @@ function renderGrid() {
         for (let j = 0; j < cols; j++) {
             const cell = document.createElement("div");
             cell.className = "cell";
+
             if (grid[i][j].isOpen) {
                 cell.classList.add("open");
                 if (grid[i][j].isMine) {
-                    cell.innerHTML = "&#x1F4A3;"; // Bomb emoji
+                    cell.classList.add("mine"); // Add "mine" class for revealed mines
                 } else {
                     cell.textContent = grid[i][j].count || "";
-
-                    // Add the class for numbers on opened cells
-                    if (grid[i][j].count === 1) {
-                        cell.classList.add("open", "number1");
-                    } else if (grid[i][j].count === 2) {
-                        cell.classList.add("open", "number2");
-                    } else if (grid[i][j].count === 3) {
-                        cell.classList.add("open", "number3");
-                    } else if (grid[i][j].count === 4) {
-                        cell.classList.add("open", "number4");
-                    }
-                    // Add more classes for numbers 4 to 8 as needed
                 }
             } else if (grid[i][j].isFlagged) {
                 cell.classList.add("flag");
             }
+
             cell.addEventListener("click", () => handleLeftClick(i, j));
             cell.addEventListener("contextmenu", (e) => {
                 e.preventDefault();
                 handleRightClick(i, j);
             });
+
             minesweeperDiv.appendChild(cell);
         }
     }
 }
+
+
+
+
+
 
 
 
